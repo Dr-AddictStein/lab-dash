@@ -1,23 +1,30 @@
-import express from 'express'
-import bodyParser from 'body-parser'
-import dotenv from 'dotenv'
+import express from "express";
+import bodyParser from "body-parser";
+import AWS from "aws-sdk";
+import dotenv from "dotenv";
 
-import user from './routes.js'
 
-dotenv.config()
+import stepRoutes from './routes/stepRoutes.js';
 
-const app = express()
+dotenv.config();
 
-app.use(bodyParser.json())
+const app = express();
+app.use(bodyParser.json());
 
-app.get("/", (req, res)=>{
-    res.json({"Hi":"Hello World"})
-})
+AWS.config.update({
+  region: process.env.AWS_REGION, // e.g., 'us-west-2'
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+});
 
-app.use('/api', user)
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
+app.set("dynamoDB", dynamoDB);
 
-const PORT = process.env.PORT;
 
-app.listen(PORT, () => {
-    console.log(`Port listening on ${PORT}`)
-})
+app.use("/api/step",stepRoutes)
+
+app.listen(process.env.PORT, () => {
+  console.log("Server is running on port 5000");
+});
+
+export { dynamoDB };
