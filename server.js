@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import AWS from "aws-sdk";
 import dotenv from "dotenv";
+import cors from 'cors';
 
 
 import stepRoutes from './routes/stepRoutes.js';
@@ -10,6 +11,7 @@ import labRoutes from "./routes/labRoutes.js";
 dotenv.config();
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 
 AWS.config.update({
@@ -22,11 +24,13 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient();
 app.set("dynamoDB", dynamoDB);
 
 
+
+
 app.use("/api/step",stepRoutes)
 app.use("/api/lab",labRoutes)
 
 app.listen(process.env.PORT, () => {
-  console.log("Server is running on port 5000");
+  console.log(`Server is running on port ${process.env.PORT}`);
 });
 
 export { dynamoDB };
