@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 
 
 import stepRoutes from './routes/stepRoutes.js';
+import labRoutes from "./routes/labRoutes.js";
 
 dotenv.config();
 
@@ -12,7 +13,7 @@ const app = express();
 app.use(bodyParser.json());
 
 AWS.config.update({
-  region: process.env.AWS_REGION, // e.g., 'us-west-2'
+  region: process.env.AWS_REGION, 
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
@@ -22,6 +23,7 @@ app.set("dynamoDB", dynamoDB);
 
 
 app.use("/api/step",stepRoutes)
+app.use("/api/lab",labRoutes)
 
 app.listen(process.env.PORT, () => {
   console.log("Server is running on port 5000");

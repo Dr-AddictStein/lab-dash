@@ -37,7 +37,6 @@ export const getStep = (req, res) => {
 
 export const addStep = (req, res) => {
   const { name, desc } = req.body;
-  console.log("XXXX",req.body)
   const params = {
     TableName: tableName,
     Item: {
