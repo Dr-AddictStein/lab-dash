@@ -66,13 +66,13 @@ export const addLabCollection = (req, res) => {
 
 export const updateLabCollection = (req, res) => {
   const { id } = req.params;
-  const { title, desc, objective, cloudprovider, type, difficulty, srccode, thumbnail, steps } = req.body;
+  const { title, desc, objective, cloudprovider, type, difficulty, srccode, thumbnail, steps, isPublished, isDeleted } = req.body;
   const params = {
     TableName: tableName,
     Key: {
       id
     },
-    UpdateExpression: 'set #t = :t, #d = :d, #o = :o, #cp = :cp, #tp = :tp, #df = :df, #sc = :sc, #tn = :tn, #st = :st',
+    UpdateExpression: 'set #t = :t, #d = :d, #o = :o, #cp = :cp, #tp = :tp, #df = :df, #sc = :sc, #tn = :tn, #st = :st, #ip = :ip, #isd=:isd',
     ExpressionAttributeNames: {
       '#t': 'title',
       '#d': 'desc',
@@ -82,7 +82,9 @@ export const updateLabCollection = (req, res) => {
       '#df': 'difficulty',
       '#sc': 'srccode',
       '#tn': 'thumbnail',
-      '#st': 'steps'
+      '#st': 'steps',
+      '#ip': 'isPublished',
+      '#isd': 'isDeleted',
     },
     ExpressionAttributeValues: {
       ':t': title,
@@ -93,7 +95,9 @@ export const updateLabCollection = (req, res) => {
       ':df': difficulty,
       ':sc': srccode,
       ':tn': thumbnail,
-      ':st': steps
+      ':st': steps,
+      ':ip': isPublished,
+      ':isd': isDeleted
     },
     ReturnValues: 'UPDATED_NEW'
   };
@@ -109,18 +113,47 @@ export const updateLabCollection = (req, res) => {
 
 export const deleteLabCollection = (req, res) => {
   const { id } = req.params;
+  const { title, desc, objective, cloudprovider, type, difficulty, srccode, thumbnail, steps, isPublished, isDeleted } = req.body;
   const params = {
     TableName: tableName,
     Key: {
       id
-    }
+    },
+    UpdateExpression: 'set #t = :t, #d = :d, #o = :o, #cp = :cp, #tp = :tp, #df = :df, #sc = :sc, #tn = :tn, #st = :st, #ip = :ip, #isd=:isd',
+    ExpressionAttributeNames: {
+      '#t': 'title',
+      '#d': 'desc',
+      '#o': 'objective',
+      '#cp': 'cloudprovider',
+      '#tp': 'type',
+      '#df': 'difficulty',
+      '#sc': 'srccode',
+      '#tn': 'thumbnail',
+      '#st': 'steps',
+      '#ip': 'isPublished',
+      '#isd': 'isDeleted',
+    },
+    ExpressionAttributeValues: {
+      ':t': title,
+      ':d': desc,
+      ':o': objective,
+      ':cp': cloudprovider,
+      ':tp': type,
+      ':df': difficulty,
+      ':sc': srccode,
+      ':tn': thumbnail,
+      ':st': steps,
+      ':ip': isPublished,
+      ':isd': true
+    },
+    ReturnValues: 'UPDATED_NEW'
   };
 
-  dynamoDB.delete(params, (err) => {
+  dynamoDB.update(params, (err, data) => {
     if (err) {
       res.status(500).json({ error: err });
     } else {
-      res.status(200).json({ message: 'LabCollection deleted successfully' });
+      res.json(data.Attributes);
     }
   });
 };
