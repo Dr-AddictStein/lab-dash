@@ -7,6 +7,7 @@ import cors from 'cors';
 
 import stepRoutes from './routes/stepRoutes.js';
 import labRoutes from "./routes/labRoutes.js";
+import fileRoutes from "./routes/fileRoutes.js";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.set("dynamoDB", dynamoDB);
 
 app.use("/api/step",stepRoutes)
 app.use("/api/lab",labRoutes)
+app.use("/api/file",fileRoutes);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
