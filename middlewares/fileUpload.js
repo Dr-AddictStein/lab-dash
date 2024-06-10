@@ -5,17 +5,17 @@ import { S3Client } from '@aws-sdk/client-s3';
 
 import multerS3 from 'multer-s3';
 
-const s3 = new S3Client({
+const s3Client = new S3Client({
     credentials: {
-        accessKeyId: process.env.BUCKET_ACCESS,
-        secretAccessKey: process.env.BUCKET_SECRET
+        accessKeyId: "AKIAW3MECRBQNBDDEHKH",
+        secretAccessKey: "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"
     },
     region: process.env.AWS_REGION
 })
 
 
 const storage = multerS3({
-    s3: s3,
+    s3: s3Client,
     bucket: "lab-23-bucket",
     contentType: multerS3.AUTO_CONTENT_TYPE,
     metadata: function (req, file, cb) {
@@ -28,6 +28,9 @@ const storage = multerS3({
 
 
 function checkFileType(file, cb) {
+
+    console.log("FHFHF",file);
+
     const filetypes = /jpeg|jpg|png|gif|mp4|mov|png/;
 
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
