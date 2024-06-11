@@ -70,7 +70,7 @@ export const addLabCollection = (req, res) => {
 export const updateLabCollection = (req, res) => {
   const { id } = req.params;
   const { title, desc, objective, cloudprovider, type, difficulty, srccode, thumbnail, steps, isPublished, isDeleted } = req.body;
-  console.log("FUCKXOXO",req.body)
+  
   const params = {
     TableName: tableName,
     Key: {
