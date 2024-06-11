@@ -28,7 +28,10 @@ const storage = multerS3({
         cb(null, { fieldName: file.fieldname });
     },
     key: function (req, file, cb) {
-        cb(null, Date.now().toString())
+        const labId = req.params.labId; // Get labId from request parameters
+        const fileName = `${Date.now().toString()}${path.extname(file.originalname)}`;
+        const fullPath = `thumbnail/${labId}/${fileName}`; // Construct the full path
+        cb(null, fullPath);
     }
 })
 

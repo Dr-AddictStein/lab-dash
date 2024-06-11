@@ -6,7 +6,7 @@ import { createImage } from '../controllers/fileController.js';
 
 const router = express.Router();
 
-router.post('/image',uploadMiddleWare.single("file"),createImage);
+router.post('/image/:labId',uploadMiddleWare.single("file"),createImage);
 
 export default router;
 
