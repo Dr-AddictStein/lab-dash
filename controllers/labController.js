@@ -36,11 +36,14 @@ export const getLabCollection = (req, res) => {
 };
 
 export const addLabCollection = (req, res) => {
-  const { title, desc, objective, cloudprovider, type, difficulty, srccode, thumbnail, steps, isDeleted, isPublished } = req.body;
+  const { id, title, desc, objective, cloudprovider, type, difficulty, srccode, thumbnail, steps, isDeleted, isPublished } = req.body;
+  
+  
+
   const params = {
     TableName: tableName,
     Item: {
-      id: Date.now().toString(),
+      id,
       title,
       desc,
       objective,
@@ -67,6 +70,7 @@ export const addLabCollection = (req, res) => {
 export const updateLabCollection = (req, res) => {
   const { id } = req.params;
   const { title, desc, objective, cloudprovider, type, difficulty, srccode, thumbnail, steps, isPublished, isDeleted } = req.body;
+  console.log("FUCKXOXO",req.body)
   const params = {
     TableName: tableName,
     Key: {
