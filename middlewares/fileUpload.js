@@ -2,13 +2,19 @@ import multer from 'multer';
 import path from 'path';
 import util from 'util';
 import { S3Client } from '@aws-sdk/client-s3';
+import dotenv from "dotenv";
 
 import multerS3 from 'multer-s3';
 
+dotenv.config();
+
+const accessKey = process.env.BUCKET_ACCESS;
+const secretKey = process.env.BUCKET_SECRET;
+
 const s3Client = new S3Client({
     credentials: {
-        accessKeyId: process.env.BUCKET_ACCESS,
-        secretAccessKey: process.env.BUCKET_SECRET
+        accessKeyId: accessKey,
+        secretAccessKey: secretKey
     },
     region: process.env.AWS_REGION
 })
@@ -16,7 +22,7 @@ const s3Client = new S3Client({
 
 const storage = multerS3({
     s3: s3Client,
-    bucket: "lab-23-bucket",
+    bucket: process.env.S3_BUCKET_NAME,
     contentType: multerS3.AUTO_CONTENT_TYPE,
     metadata: function (req, file, cb) {
         cb(null, { fieldName: file.fieldname });
